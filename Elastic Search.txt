@@ -1,0 +1,126 @@
+MySQL (RDBMS) Terminology	ElasticSearch Terminology
+Database	Index
+Table	Type
+Row	Document
+
+
+curl -XGET 'localhost:9200/carsforsale/car/1?pretty'
+
+curl -XPUT "localhost:9200/carsforsale/car/1?pretty" -H 'Content-Type: application/json' -d '{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Ford","model":"Flex"}'
+
+
+
+
+cluster.name: myCluster1
+node.name: myNode1
+path.data: /var/lib/elasticsearch
+path.logs: /var/log/elasticsearch
+network.host: 0.0.0.0
+discovery.zen.minimum_master_nodes: 1
+discovery.seed_hosts: ["0.0.0.0"]
+cluster.initial_master_nodes: ["myNode1"]
+
+
+curl -XPOST "localhost:9200/_bulk?pretty" -H 'Content-Type: application/json' -d '
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Talbot","model":"Horizon"}
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Jeep","model":"Wrangler"}
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Hyundai","model":"Santa Fe Sport"}
+'
+
+curl -XGET 'localhost:9200/carsforsale/_search?q=make:ford&pretty'
+
+curl -XPOST "localhost:9200/_bulk?pretty" -H 'Content-Type: application/json' -d '
+{"index":{"_index":"othermodel","_type":"othercar"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"ford","model":"Fiesta"}
+{"index":{"_index":"othermodel","_type":"othercar"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Toyota","model":"Tarago"}
+
+
+curl -XGET 'localhost:9200/carsforsale,othermodel/_search?q=make:ford&pretty'
+
+
+GET de-dev1-default-productservicerequirement/_search
+{
+  "query": {
+    "term": {
+      "productServiceRequirement.properties.data.requestedBy.keyword": {
+        "value": "TMAGNUS"
+      }
+    }
+  }
+    
+}
+
+sudo netstat -tulpn | grep node
+
+
+======================================================================================================================================
+
+
+https://www.elastic.co/guide/en/elasticsearch/reference/current/search-your-data.html
+
+https://medium.com/@victorsmelopoa/an-introduction-to-elasticsearch-with-kibana-78071db3704
+
+
+
+
+PUT /my_playlist/song/6
+{
+ "title" : "1000 years",
+ "artist" : "Christina Perri",
+ "album" : "Breaking Dawn",
+ "year" : 2011,
+ "location" : "London"
+}
+
+GET /my_playlist/song/6
+
+GET /my_playlist/song/_search?q=year:2011
+
+GET /carsforsale/car/_search?q=model:Horizon
+
+GET /carsforsale/car/_search
+
+PUT carsforsale
+
+POST /_bulk?pretty
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Talbot","model":"Horizon"}
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Jeep","model":"Wrangler"}
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Hyundai","model":"Santa Fe Sport"}
+
+
+POST /_bulk?pretty
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"SangYong","model":"abc123"}
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"Honda","model":"Crush"}
+{"index":{"_index":"carsforsale","_type":"car"}}
+{"user":"fauie","post_date":"2009-11-15T14:12:12","make":"BMW","model":"Sedan123"}
+
+
+POST /carsforsale/_update_by_query
+{
+  "query": {
+    "match_all": {}
+  },
+ "script": { "inline": "ctx._source.category = 10;" }
+}
+
+
+POST /carsforsale/_update_by_query
+{
+  "query": {
+    "match_all": {}
+  },
+ "script": { "inline": "ctx._source.category = 10;" }
+}
+
+
+delete carsforsale
+

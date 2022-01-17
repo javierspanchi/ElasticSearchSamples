@@ -1,0 +1,80 @@
+This is the index. Similar to a table
+URL: http://localhost:9200/students
+Method: PUT
+
+{
+ "settings": {
+     "number_of_shards": 1,
+     "number_of_replicas": 1
+ },
+   "mappings": {
+       "properties": {
+         "name": {
+               "type": "text"
+         },
+         "age": {
+               "type": "integer"
+         },
+         "average_score": {
+               "type": "float"
+         }
+     }
+   }
+}
+
+Inserting a new record:
+URL: http://localhost:9200/students/_doc
+Method: POST
+{
+ "name":"Alice",
+ "age":17,
+ "average_score":81.1
+}
+
+Bulk insert:
+URL:http://localhost:9200/students/_bulk
+Method:POST
+
+{ "index":{"_index": "students" } }
+{ "name":"john doe","age":18, "average_score":77.7 }
+{ "index":{"_index": "students" } }
+{ "name":"bob","age":16, "average_score":65.5 }
+{ "index":{"_index": "students" } }
+{ "name":"mary doe","age":18, "average_score":97.7 }
+{ "index":{"_index": "students" } }
+{ "name":"eve","age":15, "average_score":98.9 }
+
+//Note: Don't forget an empty line at the end.
+
+
+Update:
+URL: localhost:9200/students/_update/e7e6TXwBoNzUH47-o0Mp
+Method:POST
+
+{
+    "doc" : {
+    "name": "Alice123",
+    "age":17,
+    "average_score":99.1
+    }
+}
+
+Get by ID:
+URL:localhost:9200/_search
+Method:GET
+
+{
+    "query" : {
+        "match" : { "name" : "doe" }
+    }
+}
+
+Get all
+URL:localhost:9200/_search
+Method:GET
+
+{
+    "query": {
+        "match_all": {}
+    }
+}
